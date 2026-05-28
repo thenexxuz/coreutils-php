@@ -1,0 +1,77 @@
+#!/usr/bin/env php
+<?php
+// Prefer Composer autoload when available, fall back to simple PSR-4 autoloader
+$vendorAutoload = __DIR__ . "/../vendor/autoload.php";
+if (file_exists($vendorAutoload)) {
+    require $vendorAutoload;
+} else {
+    spl_autoload_register(function ($class) {
+        $prefix = 'Coreutils\\';
+        $base_dir = __DIR__ . '/../src/';
+        if (strncmp($prefix, $class, strlen($prefix)) !== 0) {
+            return;
+        }
+        $relative = substr($class, strlen($prefix));
+        $path = $base_dir . str_replace('\\', '/', $relative) . '.php';
+        if (file_exists($path)) {
+            require $path;
+        }
+    });
+}
+
+use Coreutils\CommandInterface;
+
+$argv = $_SERVER['argv'];
+$prog = basename($argv[0]);
+
+// If invoked as the main dispatcher, use the first arg as command
+if ($prog === 'coreutils' || $prog === 'coreutils-php' || $prog === 'coreutils.php') {
+    if (!isset($argv[1])) {
+        fwrite(STDERR, "Usage: coreutils <command> [args...]\n");
+        exit(1);
+    }
+    $commandName = $argv[1];
+    array_shift($argv); // drop program
+    array_shift($argv); // drop command
+} else {
+    $commandName = $prog;
+    array_shift($argv); // drop program
+}
+
+$commandName = strtolower($commandName);
+
+$map = [];
+// Auto-discover command classes in src/Commands directory.
+$commandsDir = __DIR__ . '/../src/Commands';
+if (is_dir($commandsDir)) {
+    $files = scandir($commandsDir);
+    foreach ($files as $f) {
+        if (substr($f, -11) !== 'Command.php') {
+            continue;
+        }
+        $base = basename($f, '.php'); // e.g. EchoCommand
+        $className = 'Coreutils\\Commands\\' . $base;
+        // Derive command name from class base by removing 'Command' and lowercasing
+        $cmdName = strtolower(preg_replace('/Command$/', '', $base));
+        $map[$cmdName] = $className;
+    }
+}
+
+if (!isset($map[$commandName])) {
+    fwrite(STDERR, "coreutils: unknown command '$commandName'\n");
+    // Suggest available commands
+    if (count($map) > 0) {
+        fwrite(STDERR, "Available commands: " . implode(', ', array_keys($map)) . "\n");
+    }
+    exit(127);
+}
+
+$class = $map[$commandName];
+$cmd = new $class();
+if (!($cmd instanceof CommandInterface)) {
+    fwrite(STDERR, "coreutils: internal error, command does not implement CommandInterface\n");
+    exit(3);
+}
+
+$exit = $cmd->run($argv);
+exit((int)$exit);

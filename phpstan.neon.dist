@@ -1,0 +1,13 @@
+parameters:
+  level: 5
+  paths:
+    - src
+    - tests
+  ignoreErrors:
+    - '#Call to function posix_getpwuid\(\)#'
+    - '#Call to function posix_geteuid\(\)#'
+    - '#Call to function posix_setpriority\(\)#'
+    - '#Call to function pcntl_fork\(\)#'
+    - '#Call to function pcntl_exec\(\)#'
+  excludes_analyse:
+    - vendor

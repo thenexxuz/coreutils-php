@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ["8.1", "8.2", "8.3"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pcntl, posix
+          coverage: none
+
+      - name: Validate composer cache key
+        id: composer-cache-key
+        run: |
+          echo "COMPOSER_CACHE_KEY=$(composer --version | sha1sum | cut -d' ' -f1)" >> $GITHUB_ENV
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ env.COMPOSER_CACHE_KEY }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHP lint (src and tests)
+        run: |
+          find src tests -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Run PHPStan
+        run: |
+          vendor/bin/phpstan analyse --memory-limit=1G
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --colors=always
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pcntl, posix
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run PHPStan with reviewdog annotations
+        uses: reviewdog/action-phpstan@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          phpstan_bin: vendor/bin/phpstan
+          phpstan_args: "analyse --error-format=checkstyle -c phpstan.neon.dist src tests"
+          reporter: github-pr-review
+          fail_on_error: true

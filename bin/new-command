@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+if ($argc < 2) {
+    fwrite(STDERR, "Usage: new-command <command-name>\n");
+    exit(2);
+}
+
+$name = $argv[1];
+// Convert command name (may contain - or _) to StudlyCase for class name
+$parts = preg_split('/[-_]/', $name);
+$studly = '';
+foreach ($parts as $p) {
+    $studly .= ucfirst($p);
+}
+$className = $studly . 'Command';
+$dir = __DIR__ . '/../src/Commands';
+if (!is_dir($dir)) {
+    mkdir($dir, 0755, true);
+}
+$file = $dir . '/' . $className . '.php';
+if (file_exists($file)) {
+    fwrite(STDERR, "Refusing to overwrite existing file: $file\n");
+    exit(3);
+}
+
+$template = <<<'PHP'
+<?php
+namespace Coreutils\Commands;
+
+use Coreutils\CommandInterface;
+
+class %CLASS% implements CommandInterface
+{
+    public function run(array $argv): int
+    {
+        // TODO: implement %CMD% command
+        fwrite(STDERR, "%CMD%: not implemented\n");
+        return 127;
+    }
+}
+
+PHP;
+
+$content = str_replace(['%CLASS%', '%CMD%'], [$className, $name], $template);
+file_put_contents($file, $content);
+fwrite(STDOUT, "Created $file\n");
+fwrite(STDOUT, "Remember to make bin/coreutils executable and create a symlink if you want direct invocation.\n");
+exit(0);
