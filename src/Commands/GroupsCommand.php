@@ -13,7 +13,7 @@ class GroupsCommand implements CommandInterface
             foreach ($gids as $g) {
                 if (function_exists('posix_getgrgid')) {
                     $gi = posix_getgrgid($g);
-                    $names[] = $gi['name'] ?? (string)$g;
+                    $names[] = ($gi && is_array($gi) && isset($gi['name'])) ? $gi['name'] : (string)$g;
                 } else {
                     $names[] = (string)$g;
                 }
@@ -25,7 +25,7 @@ class GroupsCommand implements CommandInterface
         if (function_exists('posix_getegid') && function_exists('posix_getgrgid')) {
             $gid = posix_getegid();
             $gr = posix_getgrgid($gid);
-            if ($gr && isset($gr['name'])) {
+            if ($gr && is_array($gr)) {
                 echo $gr['name'] . PHP_EOL;
                 return 0;
             }

@@ -24,7 +24,7 @@ class TestCommand implements CommandInterface
                 default: fwrite(STDERR, "test: unknown operator $op\n"); return 2;
             }
         }
-        if ($n >= 3) {
+        else {
             $left = $argv[0]; $op = $argv[1]; $right = $argv[2];
             switch ($op) {
                 case '=': return ($left === $right) ? 0 : 1;

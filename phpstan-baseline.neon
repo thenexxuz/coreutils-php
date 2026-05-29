@@ -1,24 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, Closure\\(\\)\\: void given\\.$#"
-			count: 1
-			path: src/Commands/ExprCommand.php
-
-		-
 			message: "#^Offset 'name' on array\\{name\\: string, passwd\\: string, gid\\: int, members\\: array\\<int, string\\>\\} in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: src/Commands/GroupsCommand.php
-
-		-
-			message: "#^Offset 'name' on array\\{name\\: string, passwd\\: string, uid\\: int, gid\\: int, gecos\\: string, dir\\: string, shell\\: string\\} in isset\\(\\) always exists and is not nullable\\.$#"
-			count: 1
-			path: src/Commands/LognameCommand.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 2
-			path: src/Commands/LsCommand.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between string and false will always evaluate to false\\.$#"
@@ -26,69 +11,9 @@ parameters:
 			path: src/Commands/PrintfCommand.php
 
 		-
-			message: "#^Parameter \\#1 \\$string of function str_pad expects string, int\\<0, max\\> given\\.$#"
-			count: 1
-			path: src/Commands/SplitCommand.php
-
-		-
-			message: "#^Offset 'blksize' on array\\{0\\: int, 1\\: int, 2\\: int, 3\\: int, 4\\: int, 5\\: int, 6\\: int, 7\\: int, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: src/Commands/StatCommand.php
-
-		-
-			message: "#^Offset 'blocks' on array\\{0\\: int, 1\\: int, 2\\: int, 3\\: int, 4\\: int, 5\\: int, 6\\: int, 7\\: int, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: src/Commands/StatCommand.php
-
-		-
-			message: "#^Offset 'dev' on array\\{0\\: int, 1\\: int, 2\\: int, 3\\: int, 4\\: int, 5\\: int, 6\\: int, 7\\: int, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: src/Commands/StatCommand.php
-
-		-
-			message: "#^Offset 'ino' on array\\{0\\: int, 1\\: int, 2\\: int, 3\\: int, 4\\: int, 5\\: int, 6\\: int, 7\\: int, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: src/Commands/StatCommand.php
-
-		-
-			message: "#^Offset 'nlink' on array\\{0\\: int, 1\\: int, 2\\: int, 3\\: int, 4\\: int, 5\\: int, 6\\: int, 7\\: int, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: src/Commands/StatCommand.php
-
-		-
-			message: "#^Comparison operation \"\\>\\=\" between int\\<3, max\\> and 3 is always true\\.$#"
-			count: 1
-			path: src/Commands/TestCommand.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Commands/TestCommand.php
-
-		-
-			message: "#^Anonymous function has an unused use \\$showBytes\\.$#"
-			count: 1
-			path: src/Commands/WcCommand.php
-
-		-
-			message: "#^Anonymous function has an unused use \\$showLines\\.$#"
-			count: 1
-			path: src/Commands/WcCommand.php
-
-		-
-			message: "#^Anonymous function has an unused use \\$showWords\\.$#"
-			count: 1
-			path: src/Commands/WcCommand.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/Commands/WhoamiCommand.php
-
-		-
-			message: "#^Undefined variable\\: \\$FOO$#"
-			count: 1
-			path: tests/MoreCommandsTest.php
 
 		-
 			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$out \\(array\\) is implicitly nullable via default value null\\.$#"

@@ -43,8 +43,20 @@ class LsCommand implements CommandInterface
                         $perms = $this->formatPerms($full);
                         $nlink = file_exists($full) ? (string)filetype($full) : '-';
                         $size = is_file($full) ? filesize($full) : 0;
-                        $owner = function_exists('posix_getpwuid') ? (@posix_getpwuid(@fileowner($full))['name'] ?? fileowner($full)) : fileowner($full);
-                        $group = function_exists('posix_getgrgid') ? (@posix_getgrgid(@filegroup($full))['name'] ?? filegroup($full)) : filegroup($full);
+                        $owner = fileowner($full);
+                        if (function_exists('posix_getpwuid')) {
+                            $pw = @posix_getpwuid(@fileowner($full));
+                            if ($pw && is_array($pw)) {
+                                $owner = $pw['name'];
+                            }
+                        }
+                        $group = filegroup($full);
+                        if (function_exists('posix_getgrgid')) {
+                            $gr = @posix_getgrgid(@filegroup($full));
+                            if ($gr && is_array($gr)) {
+                                $group = $gr['name'];
+                            }
+                        }
                         $mtime = date('Y-m-d H:i', filemtime($full));
                         echo sprintf('%s %2s %s %s %8d %s %s', $perms, $nlink, $owner, $group, $size, $mtime, $it) . PHP_EOL;
                     } else {

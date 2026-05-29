@@ -31,7 +31,7 @@ class SplitCommand implements CommandInterface
             $count = 0; $part = 0;
             while ($count < count($lines)) {
                 $chunk = array_slice($lines, $count, $linesPerFile);
-                $name = $prefix . str_pad($part, 2, 'a', STR_PAD_LEFT);
+                $name = $prefix . str_pad((string)$part, 2, 'a', STR_PAD_LEFT);
                 file_put_contents($name, implode(PHP_EOL, $chunk) . PHP_EOL);
                 $part++; $count += count($chunk);
             }

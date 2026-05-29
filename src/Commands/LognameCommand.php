@@ -11,7 +11,7 @@ class LognameCommand implements CommandInterface
         if ($name) { echo $name . PHP_EOL; return 0; }
         if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
             $pw = posix_getpwuid(posix_geteuid());
-            if ($pw && isset($pw['name'])) { echo $pw['name'] . PHP_EOL; return 0; }
+            if ($pw && is_array($pw)) { echo $pw['name'] . PHP_EOL; return 0; }
         }
         fwrite(STDERR, "logname: cannot determine login name\n");
         return 1;

@@ -9,13 +9,14 @@ class WhoamiCommand implements CommandInterface
     {
         if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
             $pw = posix_getpwuid(posix_geteuid());
-            $name = $pw['name'] ?? getenv('USER') ?: get_current_user();
-            echo $name . PHP_EOL;
-            return 0;
+            if ($pw && is_array($pw)) {
+                echo $pw['name'] . PHP_EOL;
+                return 0;
+            }
         }
         // fallback to environment or PHP's get_current_user
         $name = getenv('USER') ?: get_current_user();
-        if ($name !== false) {
+        if ($name !== false && $name !== '') {
             echo $name . PHP_EOL;
             return 0;
         }

@@ -17,11 +17,11 @@ class StatCommand implements CommandInterface
             if ($s === false) { fwrite(STDERR, "stat: failed to stat '$f'\n"); return 1; }
             echo "$f:\n";
             echo "  Size: " . $s['size'] . "\n";
-            echo "  Blocks: " . ($s['blocks'] ?? 0) . "\n";
-            echo "  IO Block: " . ($s['blksize'] ?? 0) . "\n";
-            echo "  Device: " . ($s['dev'] ?? 0) . "\n";
-            echo "  Inode: " . ($s['ino'] ?? 0) . "\n";
-            echo "  Links: " . ($s['nlink'] ?? 0) . "\n";
+            echo "  Blocks: " . (int)$s['blocks'] . "\n";
+            echo "  IO Block: " . (int)$s['blksize'] . "\n";
+            echo "  Device: " . (int)$s['dev'] . "\n";
+            echo "  Inode: " . (int)$s['ino'] . "\n";
+            echo "  Links: " . (int)$s['nlink'] . "\n";
             echo "  Access: " . date('Y-m-d H:i:s', $s['atime']) . "\n";
             echo "  Modify: " . date('Y-m-d H:i:s', $s['mtime']) . "\n";
             echo "  Change: " . date('Y-m-d H:i:s', $s['ctime']) . "\n";

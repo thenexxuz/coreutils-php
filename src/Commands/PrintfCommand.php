@@ -19,8 +19,8 @@ class PrintfCommand implements CommandInterface
             $vals = $argv;
             // use vsprintf
             try {
-                $out = @vsprintf($fmt, $vals);
-                if ($out === false) $out = '';
+                $res = @vsprintf($fmt, $vals);
+                $out = ($res === false) ? '' : $res;
             } catch (\Throwable $e) {
                 $out = '';
             }

@@ -20,7 +20,9 @@ class ExprCommand implements CommandInterface
             // simple operations: try using eval with validation
             $eval = '@(' . $expr . ');';
             $r = null;
-            set_error_handler(function(){});
+            set_error_handler(function(int $errno, string $errstr, string $errfile, int $errline): bool {
+                return true;
+            });
             $r = eval('return ' . $expr . ';');
             restore_error_handler();
             if ($r === null) { fwrite(STDERR, "expr: evaluation error\n"); return 2; }

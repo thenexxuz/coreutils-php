@@ -17,7 +17,7 @@ class WcCommand implements CommandInterface
             elseif ($a === '-c') { $showLines = false; $showWords = false; }
             else $files[] = $a;
         }
-        $processFile = function($f) use ($showLines, $showWords, $showBytes) {
+        $processFile = function($f) {
             if ($f === '-') {
                 $data = stream_get_contents(STDIN);
                 $name = '';

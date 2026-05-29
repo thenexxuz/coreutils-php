@@ -41,7 +41,7 @@ class MoreCommandsTest extends TestCase
         $id = uniqid('envtest_');
         $tmpScript = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $id . '_script.sh';
         $tmpOut = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $id . '_out';
-        file_put_contents($tmpScript, "#!/bin/sh\necho \"$FOO\" > " . escapeshellarg($tmpOut) . "\n");
+        file_put_contents($tmpScript, "#!/bin/sh\necho \"\$FOO\" > " . escapeshellarg($tmpOut) . "\n");
         chmod($tmpScript, 0700);
         if (file_exists($tmpOut)) @unlink($tmpOut);
         $cmd = new EnvCommand();
