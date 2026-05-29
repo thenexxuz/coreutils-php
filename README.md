@@ -1,5 +1,7 @@
 # coreutils-php
 
+[![CI](https://github.com/thenexxuz/coreutils-php/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/thenexxuz/coreutils-php/actions)
+
 A PHP-based shim of many GNU coreutils commands. This project aims to provide
 lightweight PHP implementations of common command-line utilities so you can run
 them from a single PHP dispatcher or via symlinked command names.
