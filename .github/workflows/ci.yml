@@ -28,6 +28,12 @@ jobs:
         run: |
           echo "COMPOSER_CACHE_KEY=$(composer --version | sha1sum | cut -d' ' -f1)" >> $GITHUB_ENV
 
+      - name: Debug PHP environment
+        run: |
+          php -v
+          php -m || true
+          composer --version || true
+
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
@@ -66,14 +72,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Run PHPStan and post annotations via reviewdog
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run PHPStan (static analysis)
         run: |
-          set -euo pipefail
-          echo 'Running phpstan...'
-          vendor/bin/phpstan analyse --error-format=checkstyle -c phpstan.neon.dist src tests > phpstan_checkstyle.xml || true
-          echo 'Installing reviewdog...'
-          curl -sSL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /usr/local/bin v0.14.0
-          echo 'Posting annotations with reviewdog...'
-          /usr/local/bin/reviewdog -f=checkstyle -name=phpstan -reporter=github-pr-review -fail-on-error=false < phpstan_checkstyle.xml || true
+          vendor/bin/phpstan analyse -c phpstan.neon.dist src tests
