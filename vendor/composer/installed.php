@@ -3,7 +3,7 @@
         'name' => 'dev-null/coreutils-php',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '16c5d2d1d5d62d1cfeff4fe162aefc882e1d41dc',
+        'reference' => 'd04d9e2b8e30e04504d2811378b9c458f9061e08',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'dev-null/coreutils-php' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '16c5d2d1d5d62d1cfeff4fe162aefc882e1d41dc',
+            'reference' => 'd04d9e2b8e30e04504d2811378b9c458f9061e08',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
