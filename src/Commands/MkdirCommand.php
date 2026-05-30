@@ -24,6 +24,9 @@ class MkdirCommand implements CommandInterface
         }
         foreach ($paths as $p) {
             if (file_exists($p)) {
+                if ($parents && is_dir($p)) {
+                    continue;
+                }
                 fwrite(STDERR, "mkdir: cannot create directory '$p': File exists\n");
                 return 1;
             }

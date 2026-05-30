@@ -59,4 +59,18 @@ class FilesystemCommandsTest extends TestCase
         $this->assertSame(0, $r);
         $this->assertFileDoesNotExist($link);
     }
+
+    public function testLnCombinedShortFlagsForceOverwrite()
+    {
+        $target = $this->tmpdir . '/target.txt';
+        $link = $this->tmpdir . '/link.txt';
+        file_put_contents($target, "hello");
+        file_put_contents($link, "preexisting");
+
+        exec('php bin/coreutils ln -sf ' . escapeshellarg($target) . ' ' . escapeshellarg($link), $o, $r);
+
+        $this->assertSame(0, $r);
+        $this->assertTrue(is_link($link));
+        $this->assertSame($target, readlink($link));
+    }
 }

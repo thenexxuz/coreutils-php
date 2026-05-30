@@ -50,6 +50,21 @@ class SortUniqHeadTailCutPasteTest extends TestCase
         $this->assertSame(["18","19","20"], $t);
     }
 
+    public function testTailLegacyNumericForm()
+    {
+        $f = $this->tmpdir . '/nums_legacy.txt';
+        $lines = [];
+        for ($i=1;$i<=25;$i++) $lines[] = (string)$i;
+        file_put_contents($f, implode("\n", $lines) . "\n");
+
+        exec('php bin/coreutils tail -20 ' . escapeshellarg($f), $out, $ret);
+
+        $this->assertSame(0, $ret);
+        $this->assertCount(20, $out);
+        $this->assertSame("6", $out[0]);
+        $this->assertSame("25", $out[19]);
+    }
+
     public function testCutAndPaste()
     {
         $f1 = $this->tmpdir . '/a.csv';

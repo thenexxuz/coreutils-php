@@ -34,6 +34,17 @@ class BatchAFileOpsTest extends TestCase
         $this->assertDirectoryDoesNotExist($this->tmpdir . '/a');
     }
 
+    public function testMkdirPOnExistingDirectoryIsSuccessful()
+    {
+        $path = $this->tmpdir . '/existing';
+        mkdir($path);
+
+        exec('php bin/coreutils mkdir -p ' . escapeshellarg($path), $o, $r);
+
+        $this->assertSame(0, $r);
+        $this->assertDirectoryExists($path);
+    }
+
     public function testChmodChangesMode()
     {
         $file = $this->tmpdir . '/f.txt';

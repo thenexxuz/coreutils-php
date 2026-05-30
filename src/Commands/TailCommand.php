@@ -13,6 +13,7 @@ class TailCommand implements CommandInterface
             $a = $argv[$i];
             if ($a === '-n' && isset($argv[$i+1])) { $n = (int)$argv[++$i]; }
             elseif (preg_match('/^-n(\d+)$/', $a, $m)) { $n = (int)$m[1]; }
+            elseif (preg_match('/^-(\d+)$/', $a, $m)) { $n = (int)$m[1]; }
             else $files[] = $a;
         }
         if (count($files) === 0) {
